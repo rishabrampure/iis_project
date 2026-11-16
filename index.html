@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClarityAI | Study Assistant</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="logo">✦ ClarityAI</div>
+    <span class="tag">IIS Research Prototype</span>
+  </header>
+
+  <main>
+
+    <!-- Screen 1: Welcome -->
+    <section id="welcome" class="card screen">
+      <p class="eyebrow">HUMAN–AI INTERACTION</p>
+
+      <h1>Think Beyond the AI Answer.</h1>
+
+      <p class="subtitle">
+        AI can sound convincing, even when it's wrong.
+        How do you decide when to trust it?
+      </p>
+
+      <p>
+        Test your judgement by answering questions,
+        reviewing AI recommendations, and making
+        your own final decisions.
+      </p>
+
+      <div class="instructions">
+        <h3>How it works</h3>
+        <p>01: Answer independently.</p>
+        <p>02: Review AI advice.</p>
+        <p>03: Verify or reconsider the recommendation.</p>
+        <p>04: Make your final decision.</p>
+      </div>
+
+      <div class="notice">
+        This prototype uses simulated AI recommendations.
+        Some may intentionally be incorrect.
+        You remain in control of your decisions.
+      </div>
+
+      <button id="startBtn" class="primary-btn">
+        Start Session →
+      </button>
+    </section>
+
+    <!-- Screen 2: Initial Answer -->
+    <section id="question" class="card screen" hidden>
+      <div class="screen-top">
+        <span>QUESTION 01</span>
+        <span>STEP 1 — INITIAL ANSWER</span>
+      </div>
+
+      <h2>What is the worst-case time complexity of binary search on a sorted array?</h2>
+
+      <p>Select your answer before viewing AI advice.</p>
+
+      <div class="options">
+        <button class="option" data-answer="A">
+          A. O(n)
+        </button>
+        <button class="option" data-answer="B">
+          B. O(log n)
+        </button>
+        <button class="option" data-answer="C">
+          C. O(n²)
+        </button>
+        <button class="option" data-answer="D">
+          D. O(1)
+        </button>
+      </div>
+
+      <p id="selectionMessage" class="selection-message"
+         aria-live="polite"></p>
+
+      <button id="backBtn" class="back-btn">
+        ← Back
+      </button>
+    </section>
+
+  </main>
+
+  <footer>
+    ClarityAI · Intelligent Interactive Systems
+  </footer>
+
+</body>
+</html>
