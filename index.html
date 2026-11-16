@@ -57,10 +57,10 @@
     <section id="question" class="card screen" hidden>
       <div class="screen-top">
         <span>QUESTION 01</span>
-        <span>STEP 1 — INITIAL ANSWER</span>
+        <span>STEP 1: INITIAL ANSWER</span>
       </div>
 
-      <h2>What is the worst-case time complexity of binary search on a sorted array?</h2>
+      <h2>What is the worst case time complexity of binary search on a sorted array?</h2>
 
       <p>Select your answer before viewing AI advice.</p>
 
@@ -82,10 +82,97 @@
       <p id="selectionMessage" class="selection-message"
          aria-live="polite"></p>
 
+
+        <button id="continueBtn" class="primary-btn" disabled>
+        View AI Recommendation →
+        </button>
+
+
       <button id="backBtn" class="back-btn">
         ← Back
       </button>
     </section>
+
+
+<!-- Screen 3: AI Recommendation and Final Decision -->
+<section id="aiAdvice" class="card screen" hidden>
+
+  <div class="screen-top">
+    <span>QUESTION 01</span>
+    <span>STEP 2 — REVIEW AI ADVICE</span>
+  </div>
+
+  <h2>Review the AI's recommendation</h2>
+
+  <p>
+    Your initial answer:
+    <strong id="initialAnswerDisplay"></strong>
+  </p>
+
+  <div class="ai-response">
+    <p class="ai-label">✦ SIMULATED AI RECOMMENDATION</p>
+
+    <h3>A. O(n)</h3>
+
+    <p>
+      Binary search repeatedly compares the target with
+      elements in the array. In the worst case, the number
+      of comparisons grows proportionally with the array
+      size, giving O(n) complexity.
+    </p>
+  </div>
+
+  <p class="ai-disclaimer">
+    This recommendation was predefined for the prototype.
+    It has not been verified and may be incorrect.
+  </p>
+
+  <h3>What is your final answer?</h3>
+
+  <p>
+    You can follow the AI's recommendation or choose
+    a different answer.
+  </p>
+
+  <div class="options">
+    <button class="option final-option" data-final="A">
+      A. O(n)
+    </button>
+
+    <button class="option final-option" data-final="B">
+      B. O(log n)
+    </button>
+
+    <button class="option final-option" data-final="C">
+      C. O(n²)
+    </button>
+
+    <button class="option final-option" data-final="D">
+      D. O(1)
+    </button>
+  </div>
+
+  <p id="finalSelectionMessage"
+     class="selection-message" aria-live="polite"></p>
+
+  <button id="submitFinalBtn" class="primary-btn" disabled>
+    Submit Final Answer
+  </button>
+
+  <div id="feedback" class="feedback" hidden
+       aria-live="polite"></div>
+
+  <button id="restartBtn" class="primary-btn" hidden>
+    Return to Welcome
+  </button>
+
+  <button id="backToQuestionBtn" class="back-btn">
+    ← Back to Question
+  </button>
+
+</section>
+
+
 
   </main>
 
