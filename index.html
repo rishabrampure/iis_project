@@ -48,6 +48,36 @@
         You remain in control of your decisions.
       </div>
 
+      
+<div class="mode-picker">
+  <h3>Choose an interaction mode</h3>
+
+  <label class="mode-option">
+    <input type="radio" name="mode" value="standard" checked>
+    <span>
+      <strong>Standard AI</strong>
+      <small>Review AI advice and make your decision.</small>
+    </span>
+  </label>
+
+  <label class="mode-option">
+    <input type="radio" name="mode" value="evidence">
+    <span>
+      <strong>Verifiable AI</strong>
+      <small>Inspect evidence before deciding.</small>
+    </span>
+  </label>
+
+  <label class="mode-option">
+    <input type="radio" name="mode" value="reflection">
+    <span>
+      <strong>Reflection Prompt</strong>
+      <small>Explain your reasoning before deciding.</small>
+    </span>
+  </label>
+</div>
+
+
       <button id="startBtn" class="primary-btn">
         Start Session →
       </button>
@@ -56,11 +86,11 @@
     <!-- Screen 2: Initial Answer -->
     <section id="question" class="card screen" hidden>
       <div class="screen-top">
-        <span>QUESTION 01</span>
+        <span class="question-number">QUESTION 01 OF 06</span>
         <span>STEP 1: INITIAL ANSWER</span>
       </div>
 
-      <h2>What is the worst case time complexity of binary search on a sorted array?</h2>
+      <h2 id="questionText"></h2>
 
       <p>Select your answer before viewing AI advice.</p>
 
@@ -98,7 +128,7 @@
 <section id="aiAdvice" class="card screen" hidden>
 
   <div class="screen-top">
-    <span>QUESTION 01</span>
+    <span class="question-number">QUESTION 01 OF 06</span>
     <span>STEP 2 — REVIEW AI ADVICE</span>
   </div>
 
@@ -112,20 +142,66 @@
   <div class="ai-response">
     <p class="ai-label">✦ SIMULATED AI RECOMMENDATION</p>
 
-    <h3>A. O(n)</h3>
-
-    <p>
-      Binary search repeatedly compares the target with
-      elements in the array. In the worst case, the number
-      of comparisons grows proportionally with the array
-      size, giving O(n) complexity.
-    </p>
+    <h3 id="aiAnswerText"></h3>
+    <p id="aiExplanation"></p>
   </div>
 
   <p class="ai-disclaimer">
     This recommendation was predefined for the prototype.
     It has not been verified and may be incorrect.
   </p>
+
+
+<p id="activeModeLabel" class="mode-status"></p>
+
+
+<!-- Mode 2: Verifiable evidence -->
+<div id="evidencePanel" class="mode-panel" hidden>
+
+  <h3>Verify the AI's reasoning</h3>
+
+  <p id="evidenceIntro"></p>
+
+  <button id="inspectEvidenceBtn" class="secondary-btn">
+    Inspect worked example
+  </button>
+
+  <div id="evidenceDetails" hidden>
+
+    <h4 id="evidenceTitle"></h4>
+
+    <p>Worked example:</p>
+
+    <div id="evidenceTrace" class="evidence-trace"></div>
+
+    <p id="evidencePrompt"></p>
+
+  </div>
+
+</div>
+
+
+<!-- Mode 3: Reflection -->
+<div id="reflectionPanel" class="mode-panel" hidden>
+  <h3>Think before deciding</h3>
+
+  <label for="reflectionInput">
+    Why do you agree or disagree with the AI's
+    recommendation?
+  </label>
+
+  <textarea
+    id="reflectionInput"
+    rows="4"
+    maxlength="300"
+    placeholder="Explain your reasoning briefly...">
+  </textarea>
+
+  <p class="reflection-hint">
+    Write at least 10 characters before submitting.
+  </p>
+</div>
+
 
   <h3>What is your final answer?</h3>
 
