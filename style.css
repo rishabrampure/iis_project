@@ -369,3 +369,68 @@ footer {
 .option:disabled {
   cursor: default;
 }
+
+
+/* Mental effort rating */
+
+.effort-panel {
+  border: 1px solid #dce5fa;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 28px 0;
+  background: #f8faff;
+}
+
+.effort-panel legend {
+  font-weight: bold;
+  color: #243a80;
+  padding: 0 8px;
+}
+
+.effort-panel p {
+  font-size: 14px;
+}
+
+.effort-scale {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.effort-scale label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 13px 4px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+}
+
+.effort-scale label:has(input:checked) {
+  background: #edf2ff;
+  border-color: #3455c5;
+  color: #3455c5;
+  font-weight: bold;
+}
+
+.effort-scale input {
+  accent-color: #3455c5;
+}
+
+.effort-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  gap: 10px;
+  font-size: 11px;
+  color: #64748b;
+}
+
+.effort-hint {
+  font-size: 12px !important;
+  margin-bottom: 0;
+}

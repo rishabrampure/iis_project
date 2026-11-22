@@ -231,6 +231,54 @@
   <p id="finalSelectionMessage"
      class="selection-message" aria-live="polite"></p>
 
+
+<!-- Mental effort rating -->
+<fieldset class="effort-panel">
+  <legend>Mental Effort</legend>
+
+  <p>
+    How mentally demanding was it to make
+    your final decision?
+  </p>
+
+  <div class="effort-scale">
+    <label>
+      <input type="radio" name="mentalEffort" value="1">
+      1
+    </label>
+
+    <label>
+      <input type="radio" name="mentalEffort" value="2">
+      2
+    </label>
+
+    <label>
+      <input type="radio" name="mentalEffort" value="3">
+      3
+    </label>
+
+    <label>
+      <input type="radio" name="mentalEffort" value="4">
+      4
+    </label>
+
+    <label>
+      <input type="radio" name="mentalEffort" value="5">
+      5
+    </label>
+  </div>
+
+  <div class="effort-labels">
+    <span>1 — Not demanding</span>
+    <span>5 — Extremely demanding</span>
+  </div>
+
+  <p class="effort-hint">
+    Select a rating before submitting.
+  </p>
+</fieldset>
+
+
   <button id="submitFinalBtn" class="primary-btn" disabled>
     Submit Final Answer
   </button>

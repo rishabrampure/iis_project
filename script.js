@@ -137,6 +137,10 @@ const inspectEvidenceBtn = document.getElementById("inspectEvidenceBtn");
 const evidenceDetails = document.getElementById("evidenceDetails");
 const reflectionInput = document.getElementById("reflectionInput");
 
+const effortInputs =
+  document.querySelectorAll('input[name="mentalEffort"]');
+
+
 const evidenceIntro = document.getElementById("evidenceIntro");
 const evidenceTitle = document.getElementById("evidenceTitle");
 const evidenceTrace = document.getElementById("evidenceTrace");
@@ -154,6 +158,7 @@ let initialAnswer = null;
 let finalAnswer = null;
 let selectedMode = "standard";
 let evidenceOpened = false;
+let mentalEffort = null;
 
 const responses = [];
 
@@ -174,15 +179,26 @@ function clearButtons(buttons) {
 }
 
 // Check whether final submission is allowed
+
 function canSubmitFinalAnswer() {
   return finalAnswer !== null &&
+    mentalEffort !== null &&
     (selectedMode !== "reflection" ||
       reflectionInput.value.trim().length >= 10);
 }
 
+
 // Reset the final answer interface
 function resetFinalDecision() {
   finalAnswer = null;
+
+mentalEffort = null;
+
+effortInputs.forEach(input => {
+  input.checked = false;
+  input.disabled = false;
+});
+
   evidenceOpened = false;
 
   clearButtons(finalButtons);
@@ -307,6 +323,17 @@ reflectionInput.addEventListener("input", () => {
   submitFinalBtn.disabled = !canSubmitFinalAnswer();
 });
 
+
+// Record the selected mental effort rating
+effortInputs.forEach(input => {
+  input.addEventListener("change", () => {
+    mentalEffort = Number(input.value);
+
+    submitFinalBtn.disabled = !canSubmitFinalAnswer();
+  });
+});
+
+
 // Select a final answer
 finalButtons.forEach(button => {
   button.addEventListener("click", () => {
@@ -349,6 +376,7 @@ submitFinalBtn.addEventListener("click", () => {
     followedAI,
     changedAnswer,
     evidenceOpened,
+    mentalEffort,
     reflection: selectedMode === "reflection"
       ? reflectionInput.value.trim()
       : null
@@ -399,6 +427,20 @@ submitFinalBtn.addEventListener("click", () => {
   }
 
   feedback.appendChild(extraFeedback);
+
+
+const effortFeedback = document.createElement("p");
+
+effortFeedback.textContent =
+  `Reported mental effort: ${mentalEffort}/5`;
+
+feedback.appendChild(effortFeedback);
+
+// Prevent changing the rating after submission
+effortInputs.forEach(input => {
+  input.disabled = true;
+});
+
 
   // Lock the submitted answer
   finalButtons.forEach(button => button.disabled = true);
