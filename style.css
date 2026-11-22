@@ -434,3 +434,78 @@ footer {
   font-size: 12px !important;
   margin-bottom: 0;
 }
+
+
+
+/* End-of-session mental effort */
+
+.effort-panel {
+  margin-top: 25px;
+  padding: 24px;
+  background: #f8faff;
+  border: 1px solid #dce5fa;
+  border-radius: 12px;
+}
+
+.effort-panel[hidden] {
+  display: none;
+}
+
+.effort-panel h3 {
+  margin-top: 0;
+}
+
+.effort-panel fieldset {
+  border: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.effort-panel legend {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.effort-scale {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+
+.effort-scale label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 4px;
+  background: white;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.effort-scale label:has(input:checked) {
+  background: #edf2ff;
+  border-color: #3455c5;
+  font-weight: bold;
+  color: #3455c5;
+}
+
+.effort-scale input {
+  accent-color: #3455c5;
+}
+
+.effort-labels {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 10px;
+}
+
+#effortSavedMessage {
+  font-size: 13px;
+  color: #3455c5;
+}

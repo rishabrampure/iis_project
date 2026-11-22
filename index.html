@@ -286,6 +286,62 @@
   <div id="feedback" class="feedback" hidden
        aria-live="polite"></div>
 
+  
+<!-- End-of-session mental effort rating -->
+<div id="sessionEffortPanel" class="effort-panel" hidden>
+
+  <h3>Session Complete!</h3>
+
+  <p>
+    Thinking about all six questions, how mentally
+    demanding was it to evaluate the AI's recommendations?
+  </p>
+
+  <fieldset>
+    <legend>Overall mental effort</legend>
+
+    <div class="effort-scale">
+      <label>
+        <input type="radio" name="sessionEffort" value="1">
+        1
+      </label>
+
+      <label>
+        <input type="radio" name="sessionEffort" value="2">
+        2
+      </label>
+
+      <label>
+        <input type="radio" name="sessionEffort" value="3">
+        3
+      </label>
+
+      <label>
+        <input type="radio" name="sessionEffort" value="4">
+        4
+      </label>
+
+      <label>
+        <input type="radio" name="sessionEffort" value="5">
+        5
+      </label>
+    </div>
+
+    <div class="effort-labels">
+      <span>Not demanding</span>
+      <span>Extremely demanding</span>
+    </div>
+  </fieldset>
+
+  <button id="saveEffortBtn" class="primary-btn" disabled>
+    Save Rating
+  </button>
+
+  <p id="effortSavedMessage" aria-live="polite"></p>
+
+</div>
+
+
   <button id="restartBtn" class="primary-btn" hidden>
     Return to Welcome
   </button>

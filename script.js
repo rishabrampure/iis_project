@@ -115,6 +115,23 @@ const backBtn = document.getElementById("backBtn");
 const continueBtn = document.getElementById("continueBtn");
 const submitFinalBtn = document.getElementById("submitFinalBtn");
 const restartBtn = document.getElementById("restartBtn");
+
+
+const sessionEffortPanel =
+  document.getElementById("sessionEffortPanel");
+
+const effortInputs =
+  document.querySelectorAll('input[name="sessionEffort"]');
+
+const saveEffortBtn =
+  document.getElementById("saveEffortBtn");
+
+const effortSavedMessage =
+  document.getElementById("effortSavedMessage");
+
+let sessionEffort = null;
+
+
 const backToQuestionBtn = document.getElementById("backToQuestionBtn");
 
 const answerButtons = document.querySelectorAll("#question .option");
@@ -137,9 +154,10 @@ const inspectEvidenceBtn = document.getElementById("inspectEvidenceBtn");
 const evidenceDetails = document.getElementById("evidenceDetails");
 const reflectionInput = document.getElementById("reflectionInput");
 
-const effortInputs =
-  document.querySelectorAll('input[name="mentalEffort"]');
+const perQuestionEffortPanel =
+  document.querySelector('input[name="mentalEffort"]')?.closest("fieldset");
 
+if (perQuestionEffortPanel) perQuestionEffortPanel.hidden = true;
 
 const evidenceIntro = document.getElementById("evidenceIntro");
 const evidenceTitle = document.getElementById("evidenceTitle");
@@ -158,7 +176,6 @@ let initialAnswer = null;
 let finalAnswer = null;
 let selectedMode = "standard";
 let evidenceOpened = false;
-let mentalEffort = null;
 
 const responses = [];
 
@@ -182,7 +199,6 @@ function clearButtons(buttons) {
 
 function canSubmitFinalAnswer() {
   return finalAnswer !== null &&
-    mentalEffort !== null &&
     (selectedMode !== "reflection" ||
       reflectionInput.value.trim().length >= 10);
 }
@@ -191,13 +207,6 @@ function canSubmitFinalAnswer() {
 // Reset the final answer interface
 function resetFinalDecision() {
   finalAnswer = null;
-
-mentalEffort = null;
-
-effortInputs.forEach(input => {
-  input.checked = false;
-  input.disabled = false;
-});
 
   evidenceOpened = false;
 
@@ -217,6 +226,23 @@ effortInputs.forEach(input => {
   restartBtn.hidden = true;
   backToQuestionBtn.hidden = true;
 }
+
+
+function resetSessionEffort() {
+  sessionEffort = null;
+
+  sessionEffortPanel.hidden = true;
+  effortSavedMessage.textContent = "";
+
+  saveEffortBtn.hidden = false;
+  saveEffortBtn.disabled = true;
+
+  effortInputs.forEach(input => {
+    input.checked = false;
+    input.disabled = false;
+  });
+}
+
 
 // Display the current question
 function loadQuestion() {
@@ -251,6 +277,7 @@ function loadQuestion() {
 
 // Start a new session
 startBtn.addEventListener("click", () => {
+  resetSessionEffort();
   selectedMode =
     document.querySelector('input[name="mode"]:checked').value;
 
@@ -324,16 +351,6 @@ reflectionInput.addEventListener("input", () => {
 });
 
 
-// Record the selected mental effort rating
-effortInputs.forEach(input => {
-  input.addEventListener("change", () => {
-    mentalEffort = Number(input.value);
-
-    submitFinalBtn.disabled = !canSubmitFinalAnswer();
-  });
-});
-
-
 // Select a final answer
 finalButtons.forEach(button => {
   button.addEventListener("click", () => {
@@ -376,7 +393,6 @@ submitFinalBtn.addEventListener("click", () => {
     followedAI,
     changedAnswer,
     evidenceOpened,
-    mentalEffort,
     reflection: selectedMode === "reflection"
       ? reflectionInput.value.trim()
       : null
@@ -429,19 +445,6 @@ submitFinalBtn.addEventListener("click", () => {
   feedback.appendChild(extraFeedback);
 
 
-const effortFeedback = document.createElement("p");
-
-effortFeedback.textContent =
-  `Reported mental effort: ${mentalEffort}/5`;
-
-feedback.appendChild(effortFeedback);
-
-// Prevent changing the rating after submission
-effortInputs.forEach(input => {
-  input.disabled = true;
-});
-
-
   // Lock the submitted answer
   finalButtons.forEach(button => button.disabled = true);
   reflectionInput.disabled = true;
@@ -451,17 +454,29 @@ effortInputs.forEach(input => {
   restartBtn.hidden = false;
   backToQuestionBtn.hidden = true;
 
-  if (questionIndex === questions.length - 1) {
-    restartBtn.textContent = "Return to Welcome";
+  
+if (questionIndex === questions.length - 1) {
 
-    const completeMessage = document.createElement("p");
-    completeMessage.textContent =
-      `Session complete: ${responses.length} questions answered.`;
+  restartBtn.textContent = "Return to Welcome";
 
-    feedback.appendChild(completeMessage);
-  } else {
-    restartBtn.textContent = "Next Question →";
-  }
+  // Ask for overall mental effort at the end
+  sessionEffortPanel.hidden = false;
+
+  // Require the rating before finishing
+  restartBtn.hidden = true;
+
+  const completeMessage = document.createElement("p");
+  completeMessage.textContent =
+    `Session complete: ${responses.length} questions answered.`;
+
+  feedback.appendChild(completeMessage);
+
+} else {
+
+  restartBtn.textContent = "Next Question →";
+
+}
+
 });
 
 // Next question or return to welcome
@@ -480,6 +495,7 @@ restartBtn.addEventListener("click", () => {
 
 // Reset the entire session
 function resetSession() {
+  resetSessionEffort();
   questionIndex = 0;
   initialAnswer = null;
   finalAnswer = null;
@@ -494,3 +510,37 @@ function resetSession() {
 }
 
 backBtn.addEventListener("click", resetSession);
+
+
+
+// Enable saving after the student selects a rating
+effortInputs.forEach(input => {
+  input.addEventListener("change", () => {
+    saveEffortBtn.disabled = false;
+  });
+});
+
+// Save the overall session rating
+saveEffortBtn.addEventListener("click", () => {
+
+  const selected = document.querySelector(
+    'input[name="sessionEffort"]:checked'
+  );
+
+  if (!selected) return;
+
+  sessionEffort = Number(selected.value);
+
+  // Lock the rating after saving
+  effortInputs.forEach(input => {
+    input.disabled = true;
+  });
+
+  saveEffortBtn.hidden = true;
+
+  effortSavedMessage.textContent =
+    `Overall mental effort recorded: ${sessionEffort}/5`;
+
+  // Allow the student to finish
+  restartBtn.hidden = false;
+});
