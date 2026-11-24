@@ -313,6 +313,11 @@ footer {
   margin-top: 0;
 }
 
+#originalReasoningText {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
 .secondary-btn {
   background: white;
   border: 1px solid #3455c5;

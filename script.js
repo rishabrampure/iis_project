@@ -153,6 +153,8 @@ const activeModeLabel = document.getElementById("activeModeLabel");
 const inspectEvidenceBtn = document.getElementById("inspectEvidenceBtn");
 const evidenceDetails = document.getElementById("evidenceDetails");
 const reflectionInput = document.getElementById("reflectionInput");
+const originalReasoningPanel = document.getElementById("originalReasoningPanel");
+const originalReasoningText = document.getElementById("originalReasoningText");
 
 const perQuestionEffortPanel =
   document.querySelector('input[name="mentalEffort"]')?.closest("fieldset");
@@ -197,11 +199,11 @@ function clearButtons(buttons) {
 
 // Check whether final submission is allowed
 
+
 function canSubmitFinalAnswer() {
-  return finalAnswer !== null &&
-    (selectedMode !== "reflection" ||
-      reflectionInput.value.trim().length >= 10);
+  return finalAnswer !== null;
 }
+
 
 
 // Reset the final answer interface
@@ -213,7 +215,12 @@ function resetFinalDecision() {
   clearButtons(finalButtons);
 
   finalSelectionMessage.textContent = "";
+  
+if (initialAnswer === null) {
   reflectionInput.value = "";
+  reflectionPanel.hidden = true;
+}
+
   evidenceDetails.hidden = true;
 
   submitFinalBtn.disabled = true;
@@ -290,7 +297,15 @@ startBtn.addEventListener("click", () => {
 // Select an initial answer
 answerButtons.forEach(button => {
   button.addEventListener("click", () => {
-    initialAnswer = button.dataset.answer;
+    
+const newAnswer = button.dataset.answer;
+
+if (selectedMode === "reflection" && newAnswer !== initialAnswer) {
+  reflectionInput.value = "";
+}
+
+initialAnswer = newAnswer;
+
 
     clearButtons(answerButtons);
 
@@ -300,7 +315,24 @@ answerButtons.forEach(button => {
     selectionMessage.textContent =
       `Initial answer recorded: ${initialAnswer}`;
 
-    continueBtn.disabled = false;
+    
+
+if (selectedMode === "reflection") {
+  reflectionPanel.hidden = false;
+
+  continueBtn.disabled =
+    reflectionInput.value.trim().length < 10;
+
+  reflectionPanel.scrollIntoView({
+    behavior: "smooth",
+    block: "center"
+  });
+} else {
+  reflectionPanel.hidden = true;
+  continueBtn.disabled = false;
+}
+
+
   });
 });
 
@@ -322,7 +354,12 @@ continueBtn.addEventListener("click", () => {
 
   // Show the appropriate interaction mode
   evidencePanel.hidden = selectedMode !== "evidence";
-  reflectionPanel.hidden = selectedMode !== "reflection";
+  originalReasoningPanel.hidden = selectedMode !== "reflection";
+  originalReasoningText.textContent = originalReasoningPanel.hidden
+    ? ""
+    : reflectionInput.value;
+  reflectionPanel.hidden = true;
+
 
   activeModeLabel.textContent =
     `Current mode: ${modeNames[selectedMode]}`;
@@ -346,9 +383,15 @@ inspectEvidenceBtn.addEventListener("click", () => {
 });
 
 // Update reflection
+
 reflectionInput.addEventListener("input", () => {
-  submitFinalBtn.disabled = !canSubmitFinalAnswer();
+  if (selectedMode === "reflection") {
+    continueBtn.disabled =
+      initialAnswer === null ||
+      reflectionInput.value.trim().length < 10;
+  }
 });
+
 
 
 // Select a final answer
