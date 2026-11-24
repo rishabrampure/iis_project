@@ -131,6 +131,9 @@ const effortSavedMessage =
 
 let sessionEffort = null;
 
+const summaryScreen = document.getElementById("sessionSummary");
+const summaryRows = document.getElementById("summaryRows");
+
 
 const backToQuestionBtn = document.getElementById("backToQuestionBtn");
 
@@ -186,6 +189,7 @@ function showScreen(screen) {
   welcomeScreen.hidden = screen !== welcomeScreen;
   questionScreen.hidden = screen !== questionScreen;
   aiScreen.hidden = screen !== aiScreen;
+  summaryScreen.hidden = screen !== summaryScreen;
 }
 
 // Clear button selections
@@ -500,7 +504,7 @@ submitFinalBtn.addEventListener("click", () => {
   
 if (questionIndex === questions.length - 1) {
 
-  restartBtn.textContent = "Return to Welcome";
+  restartBtn.textContent = "View Session Summary";
 
   // Ask for overall mental effort at the end
   sessionEffortPanel.hidden = false;
@@ -522,7 +526,67 @@ if (questionIndex === questions.length - 1) {
 
 });
 
-// Next question or return to welcome
+function showSessionSummary() {
+  const total = responses.length;
+  const correctAdvice = responses.filter(response => response.aiWasCorrect);
+  const incorrectAdvice = responses.filter(response => !response.aiWasCorrect);
+  const percentage = (count, denominator) =>
+    denominator ? `${Math.round(count / denominator * 100)}%` : "N/A";
+  const isVerifiable = selectedMode === "evidence";
+
+  const summaryValues = {
+    summaryMode: modeNames[selectedMode],
+    summaryAccuracy: percentage(
+      responses.filter(response => response.finallyCorrect).length, total
+    ),
+    summaryCorrectMatches: percentage(
+      correctAdvice.filter(response => response.followedAI).length, correctAdvice.length
+    ),
+    summaryIncorrectRejections: percentage(
+      incorrectAdvice.filter(response => !response.followedAI).length, incorrectAdvice.length
+    ),
+    summaryMatches: percentage(
+      responses.filter(response => response.followedAI).length, total
+    ),
+    summarySwitches: responses.filter(response =>
+      response.initialAnswer !== response.aiAnswer && response.followedAI
+    ).length,
+    summaryEffort: `${sessionEffort}/5`
+  };
+  Object.entries(summaryValues).forEach(([id, value]) => {
+    document.getElementById(id).textContent = value;
+  });
+
+  const verification = document.getElementById("summaryVerification");
+  verification.hidden = !isVerifiable;
+  verification.textContent = isVerifiable
+    ? `Verification examples opened: ${responses.filter(response => response.evidenceOpened).length} of ${total}`
+    : "";
+  document.getElementById("summaryReflection").hidden = selectedMode !== "reflection";
+  document.getElementById("summaryEvidenceHeader").hidden = !isVerifiable;
+
+  summaryRows.replaceChildren();
+  responses.forEach(response => {
+    const row = summaryRows.insertRow();
+    const values = [
+      response.question,
+      response.aiWasCorrect ? "Correct" : "Incorrect",
+      response.initialAnswer,
+      response.finalAnswer,
+      response.finallyCorrect ? "Correct" : "Incorrect"
+    ];
+
+    if (isVerifiable) values.push(response.evidenceOpened ? "Yes" : "No");
+    values.forEach(value => {
+      row.insertCell().textContent = value;
+    });
+  });
+
+  showScreen(summaryScreen);
+  document.getElementById("summaryHeading").focus();
+}
+
+// Next question or view the session summary
 restartBtn.addEventListener("click", () => {
   if (questionIndex < questions.length - 1) {
     questionIndex++;
@@ -531,8 +595,8 @@ restartBtn.addEventListener("click", () => {
     inspectEvidenceBtn.disabled = false;
 
     loadQuestion();
-  } else {
-    resetSession();
+  } else if (sessionEffort !== null && responses.length === questions.length) {
+    showSessionSummary();
   }
 });
 
@@ -548,11 +612,16 @@ function resetSession() {
 
   responses.length = 0;
 
+  summaryRows.replaceChildren();
   resetFinalDecision();
   showScreen(welcomeScreen);
 }
 
 backBtn.addEventListener("click", resetSession);
+document.getElementById("returnFromSummaryBtn").addEventListener("click", () => {
+  resetSession();
+  startBtn.focus();
+});
 
 
 
@@ -584,6 +653,6 @@ saveEffortBtn.addEventListener("click", () => {
   effortSavedMessage.textContent =
     `Overall mental effort recorded: ${sessionEffort}/5`;
 
-  // Allow the student to finish
+  // Reveal View Session Summary
   restartBtn.hidden = false;
 });

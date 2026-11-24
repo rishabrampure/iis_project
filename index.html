@@ -370,7 +370,56 @@
 
 
 
-  </main>
+    <section id="sessionSummary" class="card screen" aria-labelledby="summaryHeading" hidden>
+      <h2 id="summaryHeading" tabindex="-1">Session Summary</h2>
+      <p>Interaction mode: <strong id="summaryMode"></strong></p>
+
+      <dl class="summary-stats">
+        <div>
+          <dt>Final answer accuracy</dt>
+          <dd id="summaryAccuracy"></dd>
+        </div>
+        <div>
+          <dt>Correct AI advice matched</dt>
+          <dd id="summaryCorrectMatches"></dd>
+        </div>
+        <div>
+          <dt>Incorrect AI advice rejected</dt>
+          <dd id="summaryIncorrectRejections"></dd>
+        </div>
+        <div>
+          <dt>Final answers matching AI advice</dt>
+          <dd id="summaryMatches"></dd>
+        </div>
+      </dl>
+
+      <p><strong>Switched to AI advice:</strong> <span id="summarySwitches"></span></p>
+      <p><strong>Overall mental effort:</strong> <span id="summaryEffort"></span></p>
+      <p id="summaryVerification" hidden></p>
+      <p id="summaryReflection" hidden>
+        You completed independent reasoning before viewing the AI recommendations.
+      </p>
+
+      <div class="summary-table" role="region" aria-labelledby="summaryTableCaption" tabindex="0">
+        <table>
+          <caption id="summaryTableCaption">Question-by-question results</caption>
+          <thead>
+            <tr>
+              <th scope="col">Question</th>
+              <th scope="col">AI recommendation</th>
+              <th scope="col">Initial answer</th>
+              <th scope="col">Final answer</th>
+              <th scope="col">Final result</th>
+              <th id="summaryEvidenceHeader" scope="col" hidden>Evidence opened</th>
+            </tr>
+          </thead>
+          <tbody id="summaryRows"></tbody>
+        </table>
+      </div>
+
+      <button id="returnFromSummaryBtn" class="primary-btn">Return to Welcome</button>
+    </section>
+
 
   <footer>
     ClarityAI · Intelligent Interactive Systems

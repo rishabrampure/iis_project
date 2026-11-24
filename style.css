@@ -514,3 +514,76 @@ footer {
   font-size: 13px;
   color: #3455c5;
 }
+
+/* Session summary */
+
+#sessionSummary {
+  max-width: 860px;
+  padding: clamp(16px, 5vw, 45px);
+}
+
+#summaryHeading {
+  margin-top: 0;
+}
+
+.summary-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr));
+  gap: 12px;
+  margin: 24px 0;
+}
+
+.summary-stats > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px;
+  background: #f8faff;
+  border: 1px solid #dce5fa;
+  border-radius: 12px;
+}
+
+.summary-stats dt {
+  color: #334155;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.summary-stats dd {
+  margin: 0;
+  color: #3455c5;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.summary-table {
+  overflow-x: auto;
+  margin: 24px 0;
+}
+
+.summary-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  text-align: left;
+}
+
+.summary-table caption {
+  margin-bottom: 12px;
+  color: #243a80;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: left;
+}
+
+.summary-table th,
+.summary-table td {
+  padding: 10px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.summary-table th {
+  background: #f8faff;
+  color: #243a80;
+}
